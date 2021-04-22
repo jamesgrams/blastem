@@ -554,6 +554,22 @@ int main(int argc, char ** argv)
 					fatal_error("Unrecognized machine type %s\n", argv[i]);
 				}
 				break;
+            case 'P':
+                i++;
+                if( i >= argc ) {
+                    fatal_error("-P must be followed by a file name\n");
+                }
+                config = tern_insert_path(config, "ui\0save_path\0", (tern_val){.ptrval = strdup(argv[i])}, TVAL_PTR);
+                persist_config( config );
+                break;
+            case 'p':
+                i++;
+                if( i >= argc ) {
+                    fatal_error("-p must be followed by a file name\n");
+                }
+                config = tern_insert_path(config, "ui\0screenshot_path\0", (tern_val){.ptrval = strdup(argv[i])}, TVAL_PTR);
+                persist_config( config );
+                break;
 			case 's':
 				i++;
 				if (i >= argc) {
@@ -601,6 +617,8 @@ int main(int argc, char ** argv)
 					"	-l          Log 68K code addresses (useful for assemblers)\n"
 					"	-y          Log individual YM-2612 channels to WAVE files\n"
 					"   -e FILE     Write hardware event log to FILE\n"
+                    "   -P PATH     The save directory path\n"
+                    "   -p PATH     The screenshot directory path\n" 
 				);
 				return 0;
 			default:
